@@ -5,5 +5,8 @@
 #ifndef UNTITLED_HEAD_H
 #define UNTITLED_HEAD_H
 #include <iostream>
+#include <stdio.h>
 #include <vector>
+#include <string>
+#include <algorithm>
 #endif //UNTITLED_HEAD_H
