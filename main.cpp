@@ -45,6 +45,27 @@ void replaceAllSubstr_(std::string &str,std::string new_value,std::string old_va
 
 int main() {
     /*
+	/随机生成 一系列的数字  进行测试
+	int array[20] = {} ;
+	srand( (unsigned)time(NULL) );
+	for(int i = 0; i < 20;i++)
+	{
+	//srand((unsigned)time(NULL));   //根据不同时间生成不同的种子  时间单位为秒 所以不正确
+	//array[i]  = rand()% 100 + 1; //这是傻逼bug  不能赋值给数组单元
+	int tmp   = rand()% 100 + 1;
+	array[i] = tmp;
+	std::cout<<tmp<< "\n";
+	}
+	//sort
+
+
+	for(int j = 0;j < 10; j++)
+	{
+	int test = rand_number(100,300);
+	std::cout<<test<< "\n";
+	}
+	
+	
     std::string str = "   wodiuniaomu  ";
     std::cout<< str.size() << std::endl;
     int n = str.find_first_not_of(' ');

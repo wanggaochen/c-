@@ -8,6 +8,18 @@
 #ifndef UNTITLED_ARITHMETIC_H
 #define UNTITLED_ARITHMETIC_H
 #include "../head.h"
+enum class sort_type{
+    SORT_BUBBLE,
+    SORT_SELECT,
+    SORT_EXCHANGE,
+    SORT_INSERT,
+    SORT_QUICK,
+    SORT_SHELL,
+};
+
+void specific_type_sort(int array[],int n,sort_type type);
+
+
 
 // 冒泡  第一个数与后面的数比较如果符合大小关系,继续拿大的数后面的数比较.每次将最大的数放到最后
 void bubble_sort(int array[], int n);
@@ -52,4 +64,14 @@ void merge_sort(int *array,int n_size);
 //hash
 
 //二分查找
+
+//随机数产生  指定类型   指定范围  模板函数不能在cpp 文件中定义 不然使用的时候需要手动包含cpp 文件(只包含头文件会找不到定义)  最好解决办法在 .h头文件中定义模板函数
+/*
+ * start 随机数的指定开始位置
+ * end 随机数指定结束为位置
+ * */
+template<typename T>  T rand_number(T start, T end)
+{
+    return  (T)(rand()%(int )(end - start + 1) + start);
+}
 #endif //UNTITLED_ARITHMETIC_H

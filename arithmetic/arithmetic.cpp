@@ -8,6 +8,35 @@
 //位操作交换两个数  三次异或交换
 #define  EXCHANGE_INT(a, b)  {a = a^b; b = b^a; a = a^b;}
 
+void specific_type_sort(int array[],int n,sort_type type)
+{
+    switch(type) {
+        case sort_type::SORT_BUBBLE: {
+            bubble_sort(array, n);
+            break;
+        }
+
+        case sort_type::SORT_EXCHANGE: {
+            break;
+        }
+
+        case sort_type::SORT_SELECT: {
+            break;
+        }
+
+        case sort_type::SORT_SHELL:{
+            break;
+        }
+
+        case sort_type::SORT_QUICK:{
+            break;
+        }
+        default:
+            break;
+
+    }
+}
+
 
 /*
  * array 数组
@@ -149,4 +178,83 @@ void merge_sort(int *array,int n_size)
         mergeing(list1, list1_len, list2, list2_len);
     }
 }
+
+/*希尔排序 时间复杂度为 O(N*(logN)2)*/
+/*
+将序列分成若干的子序列,对每个子序列进行值插入排序;然后逐渐缩小间隔，重复
+以上过程直到间隔为1不需要大量的辅助空间，和归并排序一样容易实现。希尔排序
+是基于插入排序的一种算法，在此算法基础之上增加了一个新的特性提高了效率。
+*/
+void shell_sort(int *array,int n_size)
+{
+    int i,j,temp;
+    for(int n = n_size/2;n>0;n=n/2)
+    {
+        for(i = n;i < n_size;i++)
+        {
+            temp=array[i];
+            for( j = i - n ;j >= 0 && array[j] > temp;j = j - n)
+            {
+                array[j+n] = array[j]; //移动插入到合适的位置
+            }
+            array[j+n] = temp;
+        }
+    }
+}
+
+/*
+快排:O(nlogN)
+快排:讲一个序列分成左右两边与指定目标数比较.如果比目标小放在目标数左边,如果
+比目标数大,放在目标数右边.继续以目标数为分解点.分成两个子序列.递归使用前面比较
+*/
+int   quicking(int * array,int left,int right)
+{
+    int tmp=array[left];
+    while(left<right)
+    {
+        while(left<right&& array[right]>tmp)
+        {
+            right--;
+        }
+        if(left<right)
+        {
+            array[left]=array[right];
+            left++;
+        }
+        while(left<right && array[left]<tmp)
+        {
+            left++;
+        }
+        if(left<right)
+        {
+            array[right]=array[left];
+            right--;
+        }
+    }
+    array[left]=tmp;
+    return left;
+}
+
+void   quick_sort(int * array,int left,int right)
+{
+    if(left<right)
+    {
+        int mid=quicking(array,left,right);
+        quick_sort(array,left,mid-1);
+        quick_sort(array,mid+1,right);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
