@@ -43,6 +43,9 @@ void replaceAllSubstr_(std::string &str,std::string new_value,std::string old_va
     }
 }
 
+
+
+
 int main() {
     /*
 	/随机生成 一系列的数字  进行测试
@@ -94,7 +97,7 @@ int main() {
     replaceAllSubstr_(str1,"c","ch");
     std::cout<<  str <<std::endl;
     std::cout<<  str1 <<std::endl;
-    */
+
     std::string str = "  chhna ma df dfn ka df na adf adf adf afchh afdchhn dfach  ";
     std::transform(str.begin(),str.end(),str.begin(),::toupper);
     std::cout<< str <<std::endl;
@@ -102,6 +105,38 @@ int main() {
     std::string str1 = "  chhna ma df SDFSDSDFSDGS ka df na adf SDFSDG adf SDGS afdchhn dfach  ";
     std::transform(str1.begin(),str1.end(),str1.begin(),::toupper);
     std::cout<< str <<std::endl;
+    */
+   /* std::string str = "ch";
+    int num = 0;
+    int pos = 0;
+    std::string str_tmp = str;
+    std::string substr = "ch";
+    while(pos != std::string::npos && pos < str_tmp.length())
+    {
+        pos = str_tmp.find(substr,pos);
+        if(pos != std::string::npos)
+        {
+            pos += substr.length();
+            num++;
+        }
+    }
+    std::cout<<num <<std::endl;
+
+    replace(str.begin(),str.end(),'h','c');
+    std::cout << str <<std::endl;*/
+
+    /*std::string str = "   c   hfadn   sfsav   kanb  h  galch  aae  ach  aerq'ewor acch  h";
+    while(str.find(" ") != std::string::npos)
+    {
+        str.replace(str.find(" "),1,"");
+    }
+    //std::cout <<str <<std::endl;
+    std::string strtmp = "adfadafafdas";
+    int pos = strtmp.find("das",50);
+    std::cout <<pos <<std::endl;*/
+    std::string strResult;
+    sprintf((char*)strResult.data(),"%d",1561515);
+    std::cout<< "afkadnfa" << strResult <<std::endl;
     return 0;
 
 }

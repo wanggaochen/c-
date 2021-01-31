@@ -4,9 +4,6 @@
 
 
 #include "arithmetic.h"
-#define   MAX(a, b) ((a) > (b) ? (a):(b))
-//位操作交换两个数  三次异或交换
-#define  EXCHANGE_INT(a, b)  {a = a^b; b = b^a; a = a^b;}
 
 void specific_type_sort(int array[],int n,sort_type type)
 {
@@ -15,11 +12,9 @@ void specific_type_sort(int array[],int n,sort_type type)
             bubble_sort(array, n);
             break;
         }
-
         case sort_type::SORT_EXCHANGE: {
             break;
         }
-
         case sort_type::SORT_SELECT: {
             break;
         }
@@ -27,13 +22,11 @@ void specific_type_sort(int array[],int n,sort_type type)
         case sort_type::SORT_SHELL:{
             break;
         }
-
         case sort_type::SORT_QUICK:{
             break;
         }
         default:
             break;
-
     }
 }
 
@@ -132,7 +125,7 @@ void inset_sort(int array[], int n_size)
 1.把排序序列拆开成多个子序列(每个子序列只有一个元素)
 2.合并相邻的子序列并有序
 */
-void mergeing(int *list1,int list1_len,int * list2,int list2_len)
+void merging(int *list1,int list1_len,int * list2,int list2_len)
 {
     int *temp = new int[list1_len + list2_len];
     int i, j, k;
@@ -175,7 +168,7 @@ void merge_sort(int *array,int n_size)
         //分为多个子序列  知道子序列长度为1
         merge_sort(list1, list1_len);
         merge_sort(list2, list2_len);
-        mergeing(list1, list1_len, list2, list2_len);
+        merging(list1, list1_len, list2, list2_len);
     }
 }
 

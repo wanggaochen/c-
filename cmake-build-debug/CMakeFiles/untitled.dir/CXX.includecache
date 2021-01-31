@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/f/Clion/chenC/c-/head.h
+iostream
+-
+stdio.h
+-
+vector
+-
+string
+-
+algorithm
+-
+string.h
+-
+
+/cygdrive/f/Clion/chenC/c-/main.cpp
+iostream
+-
+head.h
+/cygdrive/f/Clion/chenC/c-/head.h
+

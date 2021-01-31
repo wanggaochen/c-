@@ -1,6 +1,7 @@
 //
 // Created by Administrator on 2021/1/24.
-// 陈旺高  基本算法 库
+// chen  基本算法 库
+//总结一些常用算法 从最基本的算法开始 --->使用过 ----->扩展
 //
 
 
@@ -8,6 +9,10 @@
 #ifndef UNTITLED_ARITHMETIC_H
 #define UNTITLED_ARITHMETIC_H
 #include "../head.h"
+#define   MAX(a, b) ((a) > (b) ? (a):(b))
+//位操作交换两个数  三次异或交换
+#define  EXCHANGE_INT(a, b)  {a = a^b; b = b^a; a = a^b;}
+
 enum class sort_type{
     SORT_BUBBLE,
     SORT_SELECT,

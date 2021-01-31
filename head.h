@@ -9,4 +9,6 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <string.h>
+#define MAX_SIZE 1024
 #endif //UNTITLED_HEAD_H
