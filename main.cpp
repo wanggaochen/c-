@@ -46,6 +46,7 @@ void replaceAllSubstr_(std::string &str,std::string new_value,std::string old_va
 
 
 
+
 int main() {
     /*
 	/随机生成 一系列的数字  进行测试
