@@ -9,6 +9,8 @@
 #ifndef UNTITLED_ARITHMETIC_H
 #define UNTITLED_ARITHMETIC_H
 #include "../head.h"
+
+#include <openssl/md5.h>
 #define   MAX(a, b) ((a) > (b) ? (a):(b))
 //位操作交换两个数  三次异或交换
 #define  EXCHANGE_INT(a, b)  {a = a^b; b = b^a; a = a^b;}
@@ -51,6 +53,8 @@ void merge_sort(int *array,int n_size);
 快排:讲一个序列分成左右两边与指定目标数比较.如果比目标小放在目标数左边,如果
         比目标数大,放在目标数右边.继续以目标数为分解点.分成两个子序列.递归使用前面比较
 */
+void   quick_sort(int * array,int left,int right);
+
 
 //希尔排序 时间复杂度为 O(N*(logN)2)*/
 /*
@@ -58,7 +62,7 @@ void merge_sort(int *array,int n_size);
 以上过程直到间隔为1不需要大量的辅助空间，和归并排序一样容易实现。希尔排序
 是基于插入排序的一种算法，在此算法基础之上增加了一个新的特性提高了效率。
 */
-
+void shell_sort(int *array,int n_size);
 
 //桶排序
 
@@ -68,7 +72,13 @@ void merge_sort(int *array,int n_size);
 
 //hash
 
+
+
+
 //二分查找
+int  binary_search(int key,int a[],int n,int &mid);
+
+int binary_recursion_search(int left, int right, int a[],int k);
 
 //随机数产生  指定类型   指定范围  模板函数不能在cpp 文件中定义 不然使用的时候需要手动包含cpp 文件(只包含头文件会找不到定义)  最好解决办法在 .h头文件中定义模板函数
 /*

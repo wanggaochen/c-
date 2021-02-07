@@ -10,5 +10,8 @@ class pthread {
 
 };
 
+class pthread_correspondence{
+
+};
 
 #endif //UNTITLED_PTHREAD_H

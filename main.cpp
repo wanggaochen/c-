@@ -1,5 +1,10 @@
 #include <iostream>
 #include "head.h"
+#include <functional>
+
+#include <future>
+#include <chrono>
+using namespace  std;
 
 void delLeftBlank(std::string str)
 {
@@ -44,7 +49,51 @@ void replaceAllSubstr_(std::string &str,std::string new_value,std::string old_va
 }
 
 
+void Thread_Fun1(std::promise<int> &p)
+{
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    //std::thread
 
+}
+
+
+void f1(int n)
+{
+    std::cout <<n <<std::endl;
+    return;
+}
+void f2(int n)
+{
+    for(auto i = 0;i < 5;i++)
+    {
+        std::cout <<n <<std::endl;
+    }
+    return;
+}
+
+//bind 函数适配器：  std::ref  std::cref
+int add(int a , int b,int c)
+{
+    return  a+b+c;
+}
+
+int add1(int& a ,int& b,const int& c)
+{
+    std::cout << a  << b << c <<std::endl;
+    a++;
+    b++;
+    return 0;
+}
+
+int  f(int& n1, int& n2, const int& n3)
+{
+    std::cout << "In function: n1[" << n1 << "]    n2[" << n2 << "]    n3[" << n3 << "]" << std::endl;
+    ++n1; // 增加存储于函数对象的 n1 副本
+    ++n2; // 增加 main() 的 n2
+    //++n3; // 编译错误
+    std::cout << "In function end: n1[" << n1 << "]     n2[" << n2 << "]     n3[" << n3 << "]" << std::endl;
+    return 0;
+}
 
 
 int main() {
@@ -125,7 +174,6 @@ int main() {
 
     replace(str.begin(),str.end(),'h','c');
     std::cout << str <<std::endl;*/
-
     /*std::string str = "   c   hfadn   sfsav   kanb  h  galch  aae  ach  aerq'ewor acch  h";
     while(str.find(" ") != std::string::npos)
     {
@@ -135,9 +183,25 @@ int main() {
     std::string strtmp = "adfadafafdas";
     int pos = strtmp.find("das",50);
     std::cout <<pos <<std::endl;*/
-    std::string strResult;
+   /* std::string strResult;
     sprintf((char*)strResult.data(),"%d",1561515);
-    std::cout<< "afkadnfa" << strResult <<std::endl;
+    std::cout<< "afkadnfa" << strResult <<std::endl;*/
+    /*function<int(int,int,int)> func1 = std::bind(add, placeholders::_1, placeholders::_2, placeholders::_3);
+    //std::cout <<func1(1,2,3);
+    int a ,b,c;
+    a = 1; b = 2 ; c = 3;
+    std::function<int()> func2 = std::bind(add1, a, std::ref(b), std::cref(c));
+    a = b = c = 10;
+    std::cout << a  << b << c <<std::endl;
+    func2();
+    std::cout << a  << b << c <<std::endl;
+
+    int n1 = 1, n2 = 1, n3 = 1;
+    std::function<int()> bound_f = std::bind(f, n1, std::ref(n2), std::cref(n3));
+    bound_f();
+    std::cout << "After function: n1[" << n1 << "]     n2[" << n2 << "]     n3[" << n3 << "]" << std::endl;*/
+
+    //
     return 0;
 
 }

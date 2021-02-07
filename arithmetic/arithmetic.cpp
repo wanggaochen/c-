@@ -238,6 +238,59 @@ void   quick_sort(int * array,int left,int right)
     }
 }
 
+/*
+ * 有序数组查找对应的数据是否存在返回查找数次   二分查找
+ * */
+int  binary_search(int key,int a[],int n,int &mid)
+{
+    int low,high,count = 0;
+    low=0;
+    high=n-1;
+    while(low<high)
+    {
+        count++;
+        mid=(low+high)/2;
+        if(key<a[mid])
+            high=mid-1;
+        else if(key>a[mid])
+            low=mid+1;
+        else if(key==a[mid])
+        {
+            return count;
+            break;
+        }
+    }
+    std::cout << "没有目标数据" << std::endl;
+    return count;
+}
+
+//递归实现
+int binary_recursion_search(int left, int right, int a[],int k)
+{
+    int mid = (left + right) / 2;
+    if (left <= right)
+    {
+        if (k > a[mid])
+        {
+            binary_recursion_search(mid + 1, right, a, k);
+        }
+        else if (k < a[mid])
+        {
+            binary_recursion_search(left, mid - 1, a, k);
+        }
+        else if (k == a[mid])
+        {
+            return mid;
+        }
+    }
+    else
+        std::cout << "没有目标数据" <<std::endl;
+        return -1;
+}
+
+
+
+//hash 加密
 
 
 
