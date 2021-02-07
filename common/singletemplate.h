@@ -1,15 +1,14 @@
 //
-// Created by Administrator on 2021/2/4.
+// 单例模式.
 //
 
 #ifndef SINGLETONTEMPLATE_H
 #define SINGLETONTEMPLATE_H
 
-#include <cstdlib> // for NULL
-#include <mutex>
+#include "../head.h"
 
 template <class T>
-class SingletonTemplate
+class SingleTemplate
 {
 public:
     static T* Instance() {
@@ -23,23 +22,22 @@ public:
             }
             mutex_->unlock();
         }
-
         return pInst;
     }
 
 public:
-    SingletonTemplate()  = delete;
-    SingletonTemplate(SingletonTemplate const&) = delete;
+    SingleTemplate()  = delete;
+    SingleTemplate(SingleTemplate const&) = delete;
 
-    ~SingletonTemplate() = delete;
+    ~SingleTemplate() = delete;
 
-    SingletonTemplate& operator=(SingletonTemplate const&) = delete;
+    SingleTemplate& operator=(SingleTemplate const&) = delete;
 private:
     static T* pInst;
     static std::mutex* mutex_;
 };
 
-template <class T> T* SingletonTemplate<T>::pInst = nullptr;
-template <class T> std::mutex* SingletonTemplate<T>::mutex_ = nullptr;
+template <class T> T* SingleTemplate<T>::pInst = nullptr;
+template <class T> std::mutex* SingleTemplate<T>::mutex_ = nullptr;
 
 #endif //UNTITLED_SINGLETEMPLATE_H

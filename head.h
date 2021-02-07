@@ -12,5 +12,7 @@
 #include <string.h>
 #include <filesystem>
 #include <queue>
+#include <cstdlib> // for NULL
+#include <mutex>
 #define MAX_SIZE 1024
 #endif //UNTITLED_HEAD_H
