@@ -1,9 +1,19 @@
 #include <iostream>
 #include "head.h"
+#include "arithmetic/arithmetic.h"
 #include <functional>
-
+#include <typeinfo>
 #include <future>
 #include <chrono>
+#include <fstream>
+#include "file/file.h"
+#include <unistd.h>
+#include "structClass/datatype.h"
+
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 using namespace  std;
 
 void delLeftBlank(std::string str)
@@ -17,7 +27,47 @@ void delLeftBlank(std::string str)
 }
 
 
+void Swap(int *heap, int len)
+{
+    int temp;
 
+    temp = heap[0];
+    heap[0] = heap[len-1];
+    heap[len-1] = temp;
+}
+
+/* Function: 构建大顶堆 */
+void BuildMaxHeap(int *heap, int len)
+{
+    int i;
+    int temp;
+
+    for (i = len/2-1; i >= 0; i--)
+    {
+        if ((2*i+1) < len && heap[i] < heap[2*i+1])    /* 根节点小于左子树 */
+        {
+            temp = heap[i];
+            heap[i] = heap[2*i+1];
+            heap[2*i+1] = temp;
+            /* 检查交换后的左子树是否满足大顶堆性质 如果不满足 则重新调整子树结构 */
+            if ((2*(2*i+1)+1 < len && heap[2*i+1] < heap[2*(2*i+1)+1]) || (2*(2*i+1)+2 < len && heap[2*i+1] < heap[2*(2*i+1)+2]))
+            {
+                BuildMaxHeap(heap, len);
+            }
+        }
+        if ((2*i+2) < len && heap[i] < heap[2*i+2])    /* 根节点小于右子树 */
+        {
+            temp = heap[i];
+            heap[i] = heap[2*i+2];
+            heap[2*i+2] = temp;
+            /* 检查交换后的右子树是否满足大顶堆性质 如果不满足 则重新调整子树结构 */
+            if ((2*(2*i+2)+1 < len && heap[2*i+2] < heap[2*(2*i+2)+1]) || (2*(2*i+2)+2 < len && heap[2*i+2] < heap[2*(2*i+2)+2]))
+            {
+                BuildMaxHeap(heap, len);
+            }
+        }
+    }
+}
 
 void replaceAllSubstr(std::string &str ,std::string new_value,std::string old_value)
 {
@@ -94,7 +144,10 @@ int  f(int& n1, int& n2, const int& n3)
     std::cout << "In function end: n1[" << n1 << "]     n2[" << n2 << "]     n3[" << n3 << "]" << std::endl;
     return 0;
 }
-
+void close_file(std::fstream & fd)
+{
+    fd.close();
+}
 
 int main() {
     /*
@@ -202,6 +255,122 @@ int main() {
     std::cout << "After function: n1[" << n1 << "]     n2[" << n2 << "]     n3[" << n3 << "]" << std::endl;*/
 
     //
+/*    auto i = 5;
+    cout << typeid(i).name()<<endl;
+    auto arr = new auto(10);
+    cout <<typeid(arr).name()<<endl;*/
+
+
+    /*int array[10] = {15,38,-66,488,484,65,-100,0,14,16};
+
+    HeapSort(array,10);
+
+    for(int i = 0 ;i < 10;i++)
+    {
+        std::cout << array[i] << endl;
+    }*/
+/*
+    int a[7] = {7, 3, 8, 5, 1, 2,-100};
+    int len = 7;     //数组长度
+    int i;
+
+    for (i = len; i > 0; i--)
+    {
+        BuildMaxHeap(a, i);
+        Swap(a, i);
+    }
+    for (i = 0; i < len; i++)
+    {
+        printf("%d ", a[i]);
+    }*/
+
+    /* int a = -100;
+     int b  = -100;
+
+    a = a^b;
+    b = b^a;
+    a = a^b;
+    EXCHANGE_INT(a,b);
+
+    cout<< '\n' << a  <<'\n' << b << endl;
+     */
+
+
+/*
+    std::string strpath = my_file_stream::get_Current_path();
+    std::cout << strpath << std::endl;
+
+    //文件流 ifstream
+
+    std::ifstream  file_name("./test.txt");
+
+    std::cout <<file_name.tellg() <<endl;
+
+    file_name.seekg(0,file_name.end);
+
+    std::cout <<file_name.tellg() <<endl;
+
+
+    std::ifstream  file_name1("./test1.txt");
+    if(!my_file_stream::is_exist("test.txt")) //文件是否存在
+        return -1;
+
+    if(!my_file_stream::is_read("test.txt"))
+        return -1;
+
+
+
+    std::streambuf * stream_buf = file_name.rdbuf();*/
+
+    //std::cout << file_name.rdbuf() <<endl;
+
+
+    /*char c = std::cin.get();
+    std::cin.putback (c);
+    std::cout << c <<endl;
+
+    std::cin.get(c);
+    std::cout << c <<endl;*/
+
+
+
+    /*char buf[256];
+    file_name.getline(buf,256);
+    std::cout << buf <<endl;
+    std::string str;
+    while(getline(file_name,str))
+    {
+        //std::cout << str <<endl;
+    }*/
+
+
+
+
+    /*std::ofstream o_fd("o_test.txt");
+    std::streambuf * buf = o_fd.rdbuf();
+    buf->sputn("dsfadfadfadfadfadga",20);
+    o_fd.close();*/
+    //o_fd.write("sdasfadgdgdg",100);
+
+    /*
+     * std::ifstream i_fd("test.txt");
+    std::streambuf * buf1 = i_fd.rdbuf();
+    std::cout <<buf1 <<std::endl;
+
+
+    std::ofstream o_fd("test1.txt");
+    std::streambuf * buf = o_fd.rdbuf();
+    std::cout <<buf <<std::endl;
+     */
+
+
+    //my_file_stream::remove_file_or_dir("./test");
+
+
+    //int ffd = open("pathname", 1,  1);
+
+    init_forward_list();
+
     return 0;
 
 }

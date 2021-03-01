@@ -67,9 +67,9 @@ void shell_sort(int *array,int n_size);
 //桶排序
 
 //堆排序
+void max_heap_sort(int array[],const int len);
 
-//大小堆
-
+void HeapSort(int A[], int N);
 //hash
 
 

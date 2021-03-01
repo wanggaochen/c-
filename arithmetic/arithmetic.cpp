@@ -42,7 +42,7 @@ void swap(int *array, int i, int j)
     array[j] = tmp;
 }
 
-//不利用新的空间实现数据交换 可能出现溢出情况
+//不利用新的空间实现数据交换 可能出现溢出情况  验证一下负数的情况
 void swap(int a,  int  b)
 {
     a = a + b;
@@ -288,9 +288,102 @@ int binary_recursion_search(int left, int right, int a[],int k)
         return -1;
 }
 
+/*
+大堆 堆是具有以下性质的完全二叉树：每个结点的值都大于或等于其左右孩子结点的值，称为大顶堆；每个结点的值都小于或等于其左右孩子结点的值
+小堆 ；每个结点的值都小于或等于其左右孩子结点的值
+堆排序：堆排序的基本思想是：将待排序序列构造成一个大顶堆，此时，整个序列的最大值就是堆顶的根节点。将其与末尾元素进行交换，此时末尾就为最大值。
+ 然后将剩余n-1个元素重新构造成一个堆，这样会得到n个元素的次小值。如此反复执行，便能得到一个有序序列了
+*/
 
+/* 构建大顶堆
+ *                             0
+ *                   1                  2
+ *              3          4      5            6
+ * */
+
+/*构建小顶堆*/
+void init_max_heap(int array[],const int n_size)
+{
+     for( int i = n_size/2 -1;i >= 0;i--)
+     {
+         if(((2 * i + 1) < n_size ) && (array[i] < array[2 * i + 1])) //root less  than left
+         {
+             EXCHANGE_INT(array[i],array[2 * i + 1]);
+             /* 检查交换后的左子树是否满足大顶堆性质 如果不满足 则重新调整子树结构 */
+             if((( 2 * (2 * i + 1) + 1 < n_size && array[2 * i + 1] < array[2 * (2*i + 1) + 1])) || ((2 * (2 * i + 1) + 2 < n_size && array[2 * i + 1] < array[2 * (2 * i + 1) + 2])))
+             {
+                 init_max_heap(array,n_size);
+             }
+         }
+         if (((2*i+2) < n_size) && (array[i] < array[2*i+2]))    /* 根节点小于右子树 */
+         {
+             EXCHANGE_INT(array[i],array[2 * i + 2]);
+             /* 检查交换后的右子树是否满足大顶堆性质 如果不满足 则重新调整子树结构 */
+             if (((2 * (2 * i + 2) + 1 < n_size && array[2 * i + 2] < array[2 * (2 * i + 2) + 1])) || ((2 * (2 * i + 2) + 2 < n_size && array[2 * i + 2] < array[2 * (2 * i + 2) + 2]))) {
+                 init_max_heap(array, n_size);
+             }
+         }
+
+
+     }
+}
+
+
+void max_heap_sort(int array[],const int len)
+{
+    for(int i = len;i - 1 > 0;i--)
+    {
+        init_max_heap(array,i);
+        EXCHANGE_INT(array[0],array[i-1]);
+    }
+}
+
+
+void PercDown(int  A[], int i, int N)
+{
+    int child;
+    int Tmp;
+    for (Tmp = A[i]; 2*i+1 < N; i = child){
+        child = 2*i+1; //注意数组下标是从0开始的，所以左孩子的不是2*i
+        if (child < N - 1 && A[child + 1] > A[child])
+            ++child;                //找到最大的儿子节点
+        if (Tmp < A[child])
+            A[i] = A[child];
+        else
+            break;
+    }
+    A[i] = Tmp;
+}
+
+void HeapSort(int A[], int N)
+{
+    int i;
+    for (i = N / 2; i >= 0; --i)
+        PercDown(A, i, N);    //构造堆
+    for(i=N-1;i>0;--i)
+    {
+        EXCHANGE_INT(A[0],A[i]);//将最大元素（根）与数组末尾元素交换，从而删除最大元素，重新构造堆
+        PercDown(A, 0, i);
+    }
+}
+
+
+//hash
 
 //hash 加密
+
+
+//sh256
+
+//crc8 crc16
+
+//ed25519
+
+//对称加密 非对称加密
+
+//文件完整性检查  文件MD5码  1. 根据文件大小  修改时间        2 读取所有内容生成MD5码
+
+//文件加密
 
 
 
