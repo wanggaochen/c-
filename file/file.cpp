@@ -16,37 +16,46 @@ namespace my_file_stream{
     {
         if(!fd)
         {
-
-
+            fclose(fd);
         }
     }
 
-    my_file::my_file(const char* filepath)
+    my_file::my_file(const char* filepath,const char* mode)
     {
-
+        fd = fopen(filepath,mode);
+        if(fd == NULL)
+        {
+            std::cout << " 文件打开失败";
+        }
     }
 
-    my_file::my_file(std::string filepath)
+    my_file::my_file(std::string filepath,const char* mode)
     {
-
+        open_file(filepath,mode);
     }
 
 
     //打开文件
-    int my_file::open_file(const char* path, const char* mode)
+    int my_file::open_file(const char* filepath, const char* mode)
     {
-        fd = fopen(path,mode);
+        open_file(filepath,mode);
     }
 
-    int my_file::open_file(const std::string path, const char* mode)
+    int my_file::open_file(const std::string filepath, const char* mode)
     {
-
+        fd = fopen(filepath.c_str(),mode);
+        if(fd == NULL)
+        {
+            std::cout << " 文件打开失败";
+        }
     }
 
     //关闭文件
     int my_file::close()
     {
-
+        if(!fd)
+            return fclose(fd);
+        return 0;
     }
 
 
@@ -62,34 +71,31 @@ namespace my_file_stream{
     }
 
 
-    //读取文件
-    std::string my_file::read_file()
-    {
 
+    int  my_file::read_file(void * buf,size_t read_size,size_t number)
+    {
+        return fread(buf ,read_size,number,fd);
     }
 
     //写文件
-    int my_file::write_file(char* buf,long len)
+    size_t my_file::write_file(void * buf,size_t read_size,size_t number)
     {
-
+        return fwrite(buf,read_size,number,fd);
     }
-
-    int my_file::write_file(std::string &buf,long len)
-    {
-
-    }
-
 
     //获取文件长度
     long my_file::get_len()
     {
-
+        if(fd == nullptr)
+            return 0;
+        fseek(fd,0,SEEK_END);
+        return ftell(fd);
     }
 
     //获取文件信息
     struct stat my_file::get_file_info()
     {
-
+        //c语言文件变成获取文件信息
     }
 
     struct stat my_file::get_file_info(const char* path)
@@ -107,10 +113,10 @@ namespace my_file_stream{
 
     }
 
-    //移动文件指针
-    void my_file::move_fd(int pos)
+    //在当前位置上移动文件指针
+    int my_file::move_fd(int pos)
     {
-
+        return fseek(fd,pos,SEEK_CUR);
     }
 
     //创建空洞文件 什么是空洞文件  空洞文件作用
@@ -126,13 +132,51 @@ namespace my_file_stream{
 
     }
 
+    //返回值是代表什么
+    int my_file::file_seek(long offset, int whence = SEEK_CUR)
+    {
+        return fseek(fd,offset,whence);
+    }
 
+    /*改变文件位置到文件开头*/
+    void my_file::rewind_start()
+    {
+        rewind(fd);
+    }
+
+    /*获取文件当前位置到文件开头长度*/
+    long my_file::get_current_len()
+    {
+        if(fd == nullptr)
+            return 0;
+        return ftell(fd);
+    }
+
+    bool my_file::is_efo()
+    {
+        return feof(fd);
+    }
+
+
+    //读取一个字符
+    char my_file::get_char_from_file()
+    {
+        return fgetc(fd);
+    }
+
+    //读取一行
+    void my_file::get_line_from_file(char* stream_buf, int buf_size)
+    {
+        fgets(stream_buf,buf_size,fd);
+    }
 
 
     ifstream::ifstream()
     {
 
     }
+
+
 
     ifstream::~ifstream()
     {

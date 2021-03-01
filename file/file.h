@@ -28,24 +28,27 @@ ios_base::trunc	        truncate	        丢弃打开前文件存在的内容
 namespace my_file_stream{
     class my_file {
     public:
-
         my_file();
+        my_file(const char* filepath, const char* mode);
+        my_file(std::string filepath, const char* mode);
 
         ~my_file();
 
-        my_file(const char* filepath);
-
-        my_file(std::string filepath);
-
-
         //打开文件
+        /* mode:
+            r:只读
+            w:只写,如果文件不存在则创建,如果文件存在且有内容,先清空文件
+            r+:读写
+            w+:读写
+            a:追加,在文件末尾写入新数据
+            a+:读 追加
+            b:对二进制文件操作
+         */
         int open_file(const char* path, const char* mode);
-
         int open_file(const std::string path, const char* mode);
 
         //关闭文件
         int close();
-
 
         //创建文件
         int create_file(const char* path,int mode);
@@ -53,17 +56,29 @@ namespace my_file_stream{
         int create_file(const std::string path,int mode);
 
 
-        //读取文件
-        std::string read_file();
+        /*读取文件
+         void* buf:指向数据缓存
+         size_t read_size:每个元素字节数
+         size_t nmebm:读写元素个数
+         返回值:实际读写字节数,fread 返回值是0 表示读到文件末尾
+        */
+        int  read_file(void * buf,size_t read_size,size_t number);
 
         //写文件
-        int write_file(char* buf,long len);
+        size_t write_file(void * buf,size_t read_size,size_t number);
 
         int write_file(std::string &buf,long len);
 
 
         //获取文件长度
         long get_len();
+
+        //读取一个字符
+        char get_char_from_file();
+
+        //读取一行
+        void  get_line_from_file(char* stream_buf, int buf_size);
+
 
         //获取文件信息
         struct stat get_file_info();
@@ -74,8 +89,8 @@ namespace my_file_stream{
 
         struct stat get_file_info(int fd);
 
-        //移动文件指针
-        void move_fd(int pos);
+        //基于当前位置移动文件指针
+        int move_fd(int pos);
 
         //创建空洞文件 什么是空洞文件  空洞文件作用
 
@@ -84,31 +99,34 @@ namespace my_file_stream{
 
         int cope_file(int thread_number);
 
+        /*  改变文件读写位置
+            offset 设置偏移值;
+            whence 相对位置
+                SEEK_SET:文件开头
+                SEEK_CUR:文件指针当前位置
+                SEEK_END:文件末尾
+         */
+        int file_seek(long offset, int whence);
 
+        /*改变文件位置到文件开头*/
+        void rewind_start();
 
+        /*获取文件当前位置到文件开头长度*/
+        long get_current_len();
 
+        bool is_efo();
 
-        //打开文件
-        //文件读取
-        //读取一行
-        //文件数据提取
-        //文件写入
-        //文件复制
-        //多线程文件复制
-        //文件输出
-        //获取文件类型
-        //文件大小
-        //空洞文件
-        //修改文件权限
-        //获取文件权限
-        //文件所有者
-        //统计文件单词数
-        //文件创建
-        //文件操作符重定向
-        //返回文件路径
-        //文件是否存在
     public:
         FILE* fd;
+    };
+
+
+    //linux 系统文件编程  c语言文件变成调用的是系统文件编程
+    class system_file {
+    public:
+
+    public:
+        int fd;
     };
 
     //目标
@@ -116,31 +134,6 @@ namespace my_file_stream{
 
     };
 
-    //linux 系统文件编程
-    class system_file {
-    public:
-        std::string file_path;
-        //文件读取
-        //读取一行
-        //文件数据提取
-        //文件写入
-        //文件复制
-        //多线程文件复制
-        //文件输出
-        //获取文件类型
-        //文件大小
-        //空洞文件
-        //修改文件权限
-        //获取文件权限
-        //文件所有者
-        //统计文件单词数
-        //文件创建
-        //文件操作符重定向
-        //返回文件路径
-        //文件是否存在
-    public:
-        int fd;
-    };
 
 //了解 c++ 输入输出流的基本使用 都是管理一个刘对象
     class ifstream{  //文件到内存
