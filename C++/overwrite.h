@@ -4,7 +4,7 @@
 
 #ifndef UNTITLED_OVERWRITE_H
 #define UNTITLED_OVERWRITE_H
-
+#include <memory>
 
 /*总结c++ 基础知识 写成CSDN 文章 */
 class   base{

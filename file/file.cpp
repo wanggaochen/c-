@@ -38,7 +38,7 @@ namespace my_file_stream{
     //打开文件
     int my_file::open_file(const char* filepath, const char* mode)
     {
-        open_file(filepath,mode);
+        return open_file(filepath,mode);
     }
 
     int my_file::open_file(const std::string filepath, const char* mode)
@@ -47,7 +47,9 @@ namespace my_file_stream{
         if(fd == NULL)
         {
             std::cout << " 文件打开失败";
+            return -1;
         }
+        return 0;
     }
 
     //关闭文件
@@ -62,12 +64,12 @@ namespace my_file_stream{
     //创建文件
     int my_file::create_file(const char* path,int mode)
     {
-
+        return 0;
     }
 
     int my_file::create_file(const std::string path,int mode)
     {
-
+        return 0;
     }
 
 
@@ -92,7 +94,7 @@ namespace my_file_stream{
         return ftell(fd);
     }
 
-    //获取文件信息
+   /* //获取文件信息
     struct stat my_file::get_file_info()
     {
         //c语言文件变成获取文件信息
@@ -112,7 +114,7 @@ namespace my_file_stream{
     {
 
     }
-
+*/
     //在当前位置上移动文件指针
     int my_file::move_fd(int pos)
     {

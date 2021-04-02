@@ -58,16 +58,28 @@
  */
 
 
+/*第一*/
 /*
+
+ 列表初始化
  构造
  复制构造函数
  赋值运算符
  移动构造
  移动赋值运算符
-
  析构
+ const 成员
+ static 成员
+ const 成员函数
+ static 成员函数
+ 非成员函数
+ 内部内
+ explicit
+ mutable
+
  */
 class construct_fun{
+public:
     construct_fun():c_number(0){
 
     };
@@ -77,11 +89,40 @@ class construct_fun{
 
     }
 
+    //拷贝构造  深拷贝 浅拷贝
+    construct_fun(const construct_fun& AA):c_number(0)
+    {
+
+    }
+
+    //赋值运算
+
+    ~construct_fun()
+    {
+        if(point)
+        {
+            delete[] point;
+            point = nullptr;
+        }
+    }
 
 private:
     int  data;
     const int c_number;
     std::string str;
-    construct_fun* point;
+    int* point;
 };
 
+
+
+/*第二*/
+/*
+ 虚函数
+ 纯虚函数
+ 继承多态
+ 静态多态
+ 动态多态
+ */
+
+
+/*第三*/

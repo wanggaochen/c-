@@ -14,6 +14,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "C++new/newoprator.h"
+#include "C++new/newkeywad.h"
 using namespace  std;
 
 void delLeftBlank(std::string str)
@@ -379,11 +381,28 @@ int main() {
 
     //冲定向 dup  产生一个新的文件文件描述符 复制旧的文件描述符
 
-    my_file_stream::system_file file_fd;
+    /*my_file_stream::system_file file_fd;
     file_fd.sys_file_create("dup.txt");
     file_fd.sys_file_write("adfadf",10);
     int fd = dup(file_fd.getfd());
-    file_fd.sys_file_close();
+    file_fd.sys_file_close();*/
+
+    //ptr_auto();
+    //ptr_shared();
+    //demo_unique();
+
+    //circulation_shared_ptr();
+    //circulation_weak_ptr();
+    //test_weak_ptr();
+    //auto_ptr_function();
+    //ptr_unique_test();
+    //test_shared_ptr();
+    //test_weak_ptr();
+    //keyword_auto();
+
+    //keyword_decltype();
+
+    dead_value();
 
     return 0;
 
