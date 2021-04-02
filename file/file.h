@@ -25,6 +25,7 @@ ios_base::trunc	        truncate	        丢弃打开前文件存在的内容
 
 
 //基于C语言  文件编程 系统函数文件编程  C语言文件编程
+//sysconf 获取运行时配置信息
 namespace my_file_stream{
     class my_file {
     public:
@@ -36,13 +37,12 @@ namespace my_file_stream{
 
         //打开文件
         /* mode:
-            r:只读
-            w:只写,如果文件不存在则创建,如果文件存在且有内容,先清空文件
-            r+:读写
-            w+:读写
-            a:追加,在文件末尾写入新数据
-            a+:读 追加
-            b:对二进制文件操作
+            r+  开放阅读和写作。流被定位在文件的开头。
+            w   将文件截断为零长度或创建用于写入的文本文件。流被定位在文件的开头。
+            w+  开放阅读和写作。如果文件不存在，则创建该文件，否则将截断该文件。流被定位在文件的开头。
+            a   一种用于追加(在文件末尾写入)的开口。如果文件不存在，则创建该文件。流被定位在文件的末尾。
+            a+  打开用于读取和追加(在文件末尾写入)。如果文件不存在，则创建该文件。用于读取的初始文件位置是在开头文件，但是输出总是追加到文件的末尾。
+            b   对二进制文件操作
          */
         int open_file(const char* path, const char* mode);
         int open_file(const std::string path, const char* mode);
@@ -124,6 +124,120 @@ namespace my_file_stream{
     //linux 系统文件编程  c语言文件变成调用的是系统文件编程
     class system_file {
     public:
+        system_file();
+        /*
+         int flag
+            O_RDONLY  只读    如果有读(O_RDONLY,O_RDWR)操作,文件必须存在
+            O_WRONLY  只写    如果有写(O_WRONLY) 如果文件不存在先创建文件
+            O_RDWR    读写
+
+            O_APPEND:移动文件内部针到文件末尾写数据(追加)
+            O_CLOEXEC:子进程关闭文件描述符(在执行execl家族函数)
+            O_CREAT:创建文件,一般与O_EXCL一起使用,如果文件已经存在,返回错误.
+            必须传递第三个参数,指定新文件创建默认模式.模式值
+                a.宏变量
+                #define S_IRWXU 00700
+                #define S_IRUSR 00400
+                #define S_IWUSR 00200
+                #define S_IXUSR 00100
+
+                #define S_IRWXG 00070
+                #define S_IRGRP 00040
+                #define S_IWGRP 00020
+                #define S_IXGRP 00010
+
+                #define S_IRWXO 00007
+                #define S_IROTH 00004
+                #define S_IWOTH 00002
+                #define S_IXOTH 00001
+                b.8进制数字表示:0777 0567
+
+            O_NONBLOCK:设置文件非堵塞操作
+            O_TRUNC:一般与O_RDWR|O_WRONLY,先清空文件,再写数据.
+            O_RDWR|O_WRONLY只是覆盖
+            返回值:成功返回>2值(从3开始)  -1:失败
+
+        */
+        system_file(const char* filepath, int flag,mode_t mode);
+        system_file(const char* filepath, int flag);
+        system_file(const std::string  filepath, int flag,mode_t mode);
+        system_file(const std::string filepath, int flag);
+
+        /*返回为0 操作成功 -1打开失败*/
+        int sys_file_open(const char* filepath, int flag,mode_t mode);
+        int sys_file_open(const char* filepath,int flag);
+        int sys_file_open(const std::string  filepath, int flag,mode_t mode);
+        int sys_file_open(const std::string filepath,int flag);
+
+        int sys_file_create(const std::string filepath,mode_t mode = 0777);
+
+        int sys_file_create(const char* filepath,mode_t mode = 0777);
+
+        int  get_file_info(struct  stat* file_info);
+
+        /*  文件描述度重定向
+         dup/dup2
+            int dup(int oldfd);
+            复制 oldfd 文件描述符,返回当前最小未使用描述符值作为新文件描述符.两个文件描述符关联同一个文件
+            这两个描述符共享同一个数据结构，共享所有的锁定，读写指针和各项全现或标志位  等效于 fcntl(oldfd, F_DUPFD, 0)
+            int dup2(int oldfd, int newfd);
+            int newfd:指定一个新的文件描述符复制oldfd文件描述符,关闭 oldfd
+            如果oldfd 无效,newfd不关闭
+            如果oldfd=newfd 不复制
+         */
+
+        int sys_file_dump();
+
+
+        //改变文件内部指针
+        long sys_file_seek(long pos,int whence);
+
+        //获取文件大小
+        long sys_file_len();
+
+        //文件内存映射
+
+
+        //修改文件权限
+        int  modify_sys_file_limit(mode_t mode);
+
+        //修改文件所有者 用户ID 组ID
+        int modify_sys_file_user(uid_t __owner, gid_t __group);
+
+        /*
+            文件锁
+                LOCK_SH :共享锁
+                LOCK_EX :排斥锁
+                LOCK_UN :解锁
+                LOCK_NB :如果资源已经被锁住,进程立即返回不堵塞
+
+            死锁: 死锁是指两个或两个以上的进程在执行过程中，由于竞争资源或者由于彼此通信而造成的一种阻塞的现象，若无外力作用，
+            它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程
+            互相等待   系统资源竞争   进程运行推进顺序不合适
+            互斥  保持 不可剥夺 循环等待
+            线程A
+                lock(fd);
+                    .....
+                    lock(fd1);//已经被锁住 堵塞
+
+            线程B
+                lock(fd1);
+                    .....
+                    lock(fd);// 已经被锁住 堵塞
+
+
+         */
+        int file_lock(int operation);
+
+        //返回值:>0:从用户空间写到内核空间的字节数     返回值-1错误
+        size_t sys_file_write(const void* buf,size_t count);
+
+        //返回值:>0:从用内核空间写到用户空间的字节数  =0:文件读到末尾  -1错误
+        size_t sys_file_read(void *buf, size_t count);
+
+        int sys_file_close();
+
+        int getfd();
 
     public:
         int fd;
@@ -277,6 +391,17 @@ namespace my_file_stream{
 
     int remove_file_or_dir(const char* path);
 
+    int delete_file(const char* path);
+
+
+    void get_file_info(const char* file_path,struct  stat* file_info);
+
+    /*
+        如果是一个符号链接文件,获取自身链接文件状态信息,不是引用原文件状态信息
+    */
+    int  get_file_info(const std::string file_path,struct  stat* file_info,bool link =false);
+
+    int modify_file_limit(const char* filepath, mode_t mode);
 };
 
 

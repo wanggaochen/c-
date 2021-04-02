@@ -124,12 +124,12 @@ namespace my_file_stream{
 
     int my_file::cope_file()
     {
-
+        return 0;
     }
 
     int my_file::cope_file(int thread_number)
     {
-
+        return 0;
     }
 
     //返回值是代表什么
@@ -169,6 +169,158 @@ namespace my_file_stream{
     {
         fgets(stream_buf,buf_size,fd);
     }
+
+    system_file::system_file()
+    {
+        fd == -1;
+    }
+
+    system_file::system_file(const char* filepath, int flag,mode_t mode)
+    {
+        sys_file_open(filepath,flag,mode);
+    }
+
+    system_file::system_file(const char* filepath, int flag)
+    {
+        sys_file_open(filepath,flag);
+    }
+
+    system_file::system_file(const std::string  filepath, int flag,mode_t mode)
+    {
+        sys_file_open(filepath,flag,mode);
+    }
+
+    system_file::system_file(const std::string filepath, int flag)
+    {
+        sys_file_open(filepath,flag,flag);
+    }
+
+    //文件不存在 创建 默认创建权限0777
+    int system_file::sys_file_open(const char* filepath, int flag,mode_t mode)
+    {
+        fd = open(filepath,flag,mode);
+        if(fd == -1)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    //
+    int system_file::sys_file_open(const char* filepath,int flag)
+    {
+        fd = open(filepath,flag);
+        if(fd == -1)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    int system_file::sys_file_open(const std::string  filepath, int flag,mode_t mode)
+    {
+        fd = open(filepath.c_str(),flag,mode);
+        if(fd == -1)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    int system_file::sys_file_open(const std::string filepath,int flag)
+    {
+        fd = open(filepath.c_str(),flag);
+        if(fd == -1)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    int system_file::sys_file_create(const std::string filepath,mode_t mode )
+    {
+        fd = creat(filepath.c_str(),mode);
+        if(fd == -1)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    int system_file::sys_file_create(const char* filepath,mode_t mode )
+    {
+        fd = creat(filepath,mode);
+        if(fd == -1)
+        {
+            return -1;
+        }
+        return 0;
+    }
+
+    /*获取文件信息*/
+    int    system_file::get_file_info(struct  stat* file_info)
+    {
+        return fstat(fd,file_info);
+    }
+
+
+    //改变文件内部指针
+    long system_file::sys_file_seek(long pos,int whence)
+    {
+        if(fd==-1)
+            return -1;
+        return lseek(fd,pos,whence);
+    }
+
+    //获取文件大小
+    long system_file::sys_file_len()
+    {
+        if(fd==-1)
+            return -1;
+        return lseek(fd,0,SEEK_SET);
+    }
+
+    //修改文件权限
+    int  system_file::modify_sys_file_limit(mode_t mode)
+    {
+        return fchmod(fd,mode);
+    }
+
+    //修改文件所有者 用户ID 组ID
+    int system_file::modify_sys_file_user(uid_t owner, gid_t group)
+    {
+        return fchown(fd,owner,group);
+    }
+
+    int system_file::file_lock(int operation)
+    {
+        return flock(fd,operation);
+    }
+
+    size_t system_file::sys_file_write(const void* buf,size_t count)
+    {
+        if(fd==-1)
+            return -1;
+        return write(fd,buf,count);
+    }
+
+    size_t system_file::sys_file_read(void *buf, size_t count)
+    {
+        if(fd==-1)
+            return -1;
+        return read(fd,buf,count);
+    }
+
+    int system_file::sys_file_close()
+    {
+        if(fd!=-1)
+            return close(fd);
+        return 0;
+    }
+
+
+
+
 
 
     ifstream::ifstream()
@@ -535,6 +687,31 @@ namespace my_file_stream{
         }
         std::cout << "path 不是文件或者目录名" <<std::endl;
         return -1;
+    }
+
+    int delete_file(const char* path)
+    {
+        if(is_exist(path))
+            return unlink(path);
+        return -1;
+    }
+
+
+    void get_file_info(const char* file_path,struct  stat* file_info)
+    {
+        stat(file_path,file_info);
+    }
+
+    int get_file_info(const std::string file_path,struct  stat* file_info,bool link)
+    {
+        if(!link)
+            return stat(file_path.c_str(),file_info);
+        return  lstat(file_path.c_str(),file_info);
+    }
+
+    int modify_file_limit(const char* filepath, mode_t mode)
+    {
+        return chmod(filepath,mode);
     }
 
 }

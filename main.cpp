@@ -209,24 +209,24 @@ int main() {
     std::transform(str1.begin(),str1.end(),str1.begin(),::toupper);
     std::cout<< str <<std::endl;
     */
-   /* std::string str = "ch";
-    int num = 0;
-    int pos = 0;
-    std::string str_tmp = str;
-    std::string substr = "ch";
-    while(pos != std::string::npos && pos < str_tmp.length())
-    {
-        pos = str_tmp.find(substr,pos);
-        if(pos != std::string::npos)
-        {
-            pos += substr.length();
-            num++;
-        }
-    }
-    std::cout<<num <<std::endl;
+    /* std::string str = "ch";
+     int num = 0;
+     int pos = 0;
+     std::string str_tmp = str;
+     std::string substr = "ch";
+     while(pos != std::string::npos && pos < str_tmp.length())
+     {
+         pos = str_tmp.find(substr,pos);
+         if(pos != std::string::npos)
+         {
+             pos += substr.length();
+             num++;
+         }
+     }
+     std::cout<<num <<std::endl;
 
-    replace(str.begin(),str.end(),'h','c');
-    std::cout << str <<std::endl;*/
+     replace(str.begin(),str.end(),'h','c');
+     std::cout << str <<std::endl;*/
     /*std::string str = "   c   hfadn   sfsav   kanb  h  galch  aae  ach  aerq'ewor acch  h";
     while(str.find(" ") != std::string::npos)
     {
@@ -236,9 +236,9 @@ int main() {
     std::string strtmp = "adfadafafdas";
     int pos = strtmp.find("das",50);
     std::cout <<pos <<std::endl;*/
-   /* std::string strResult;
-    sprintf((char*)strResult.data(),"%d",1561515);
-    std::cout<< "afkadnfa" << strResult <<std::endl;*/
+    /* std::string strResult;
+     sprintf((char*)strResult.data(),"%d",1561515);
+     std::cout<< "afkadnfa" << strResult <<std::endl;*/
     /*function<int(int,int,int)> func1 = std::bind(add, placeholders::_1, placeholders::_2, placeholders::_3);
     //std::cout <<func1(1,2,3);
     int a ,b,c;
@@ -363,13 +363,27 @@ int main() {
     std::cout <<buf <<std::endl;
      */
 
-
     //my_file_stream::remove_file_or_dir("./test");
-
-
     //int ffd = open("pathname", 1,  1);
+    //init_forward_list();
 
-    init_forward_list();
+    //系统文件编程
+    /*
+    int fd = open("sysfile.txt", O_WRONLY|O_CREAT);
+    if (fd == -1)
+    {
+        std::cout << "file open fail " << std::endl;
+    }
+    std::cout << "success" << std::endl;
+     */
+
+    //冲定向 dup  产生一个新的文件文件描述符 复制旧的文件描述符
+
+    my_file_stream::system_file file_fd;
+    file_fd.sys_file_create("dup.txt");
+    file_fd.sys_file_write("adfadf",10);
+    int fd = dup(file_fd.getfd());
+    file_fd.sys_file_close();
 
     return 0;
 
